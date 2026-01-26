@@ -34,12 +34,6 @@ import { Ruler } from "./Ruler";
 import { Threads } from "./Threads";
 import { SubmitStageDialog } from "./SubmitStageDialog";
 import { Button } from "@/components/ui/button";
-import { Pencil } from "lucide-react";
-import {
-  Tooltip,
-  TooltipTrigger,
-  TooltipContent,
-} from "@/components/ui/tooltip";
 import { useEditorStore } from "@/app/(root)/store/use-Editor-store";
 import { useRouter } from "next/navigation";
 import { keyToLabel } from "@/lib/stages";
@@ -294,14 +288,6 @@ const Editor = ({
       toast("👀 Your supervisor just joined this stage!");
     }
   }, [others, currentStage, isStudent]);
-
-  const lastStageKey = stages.length > 0 ? stages[stages.length - 1].key : null;
-  const lastStageCompleted = lastStageKey
-    ? project?.submissionStages?.[lastStageKey]?.completed
-    : false;
-
-  const stageIndex = stages.findIndex((s) => s.key === currentStage.key);
-  const nextStageKey = stages[stageIndex + 1]?.key || currentStage.key; // keep current if last stage
 
   if (!editor || !project || !currentUser) {
     return (

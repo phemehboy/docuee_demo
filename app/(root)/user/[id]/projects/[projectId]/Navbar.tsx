@@ -38,7 +38,6 @@ import { Doc } from "@/convex/_generated/dataModel";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 
-import DocumentInput from "./DocumentInput";
 import { useEditorStore } from "@/app/(root)/store/use-Editor-store";
 import { Avatars } from "./Avatar";
 import { Inbox } from "./Inbox";
@@ -52,6 +51,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import DocumentInput from "./DocumentInput";
 
 interface NavBarProps {
   user: Doc<"users">;
@@ -150,8 +150,10 @@ const Navbar = ({
     const savedRows = localStorage.getItem("customTableRows");
     const savedCols = localStorage.getItem("customTableCols");
 
-    if (savedRows) setRows(Number(savedRows));
-    if (savedCols) setCols(Number(savedCols));
+    setTimeout(() => {
+      if (savedRows) setRows(Number(savedRows));
+      if (savedCols) setCols(Number(savedCols));
+    }, 0);
   }, []);
 
   return (

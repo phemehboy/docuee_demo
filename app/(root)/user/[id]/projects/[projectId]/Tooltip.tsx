@@ -14,7 +14,7 @@ const Tooltip = ({
     left: 0,
   });
   const [tooltipElement, setTooltipElement] = useState<HTMLElement | null>(
-    null
+    null,
   );
 
   useEffect(() => {
@@ -23,9 +23,9 @@ const Tooltip = ({
       const div = document.createElement("div");
       div.id = "tooltip-portal";
       document.body.appendChild(div);
-      setTooltipElement(div);
+      setTimeout(() => setTooltipElement(div), 0);
     } else {
-      setTooltipElement(el);
+      setTimeout(() => setTooltipElement(el), 0);
     }
   }, []);
 
@@ -66,7 +66,7 @@ const Tooltip = ({
           >
             {text}
           </div>,
-          tooltipElement
+          tooltipElement,
         )}
     </>
   );

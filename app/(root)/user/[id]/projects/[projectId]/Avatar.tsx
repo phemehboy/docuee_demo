@@ -3,7 +3,6 @@
 import { Separator } from "@/components/ui/separator";
 import { useOthers, useSelf } from "@liveblocks/react/suspense";
 import { ClientSideSuspense } from "@liveblocks/react";
-import Image from "next/image";
 import React from "react";
 
 const AvatarsComponent = () => {
@@ -26,13 +25,14 @@ const AvatarStack = () => {
   return (
     <>
       <div className="flex items-center">
-        {currentUser && (
+        {currentUser?.info?.avatar && (
           <div className="relative ml-2">
             <Avatar src={currentUser.info.avatar} name="You" />
           </div>
         )}
         <div className="flex">
           {users.map(({ connectionId, info }) => {
+            if (!info?.avatar) return null;
             return (
               <Avatar
                 key={connectionId}

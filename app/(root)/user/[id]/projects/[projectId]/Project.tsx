@@ -109,18 +109,20 @@ export const Project = ({ projectId, id }: ProjectProps) => {
   useEffect(() => {
     if (!project || !STAGES.length) return;
 
-    setCurrentStage((prev) => {
-      if (prev) {
-        const prevStageInfo = project.submissionStages?.[prev.key];
-        if (
-          prevStageInfo &&
-          (prevStageInfo.completed || prevStageInfo.submitted)
-        ) {
-          return prev; // keep current if still allowed
+    setTimeout(() => {
+      setCurrentStage((prev) => {
+        if (prev) {
+          const prevStageInfo = project.submissionStages?.[prev.key];
+          if (
+            prevStageInfo &&
+            (prevStageInfo.completed || prevStageInfo.submitted)
+          ) {
+            return prev; // keep current if still allowed
+          }
         }
-      }
-      return getNextAllowedStage(STAGES);
-    });
+        return getNextAllowedStage(STAGES);
+      });
+    }, 0);
   }, [project, STAGES]);
 
   const handleTypingStart = async () => {
