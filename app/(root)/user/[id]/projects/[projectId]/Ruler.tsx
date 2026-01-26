@@ -17,6 +17,9 @@ export const Ruler = () => {
     storage.set("rightMargin", position);
   }, []);
 
+  const leftMarginNumber = Number(leftMargin ?? LEFT_MARGIN_DEFAULT);
+  const rightMarginNumber = Number(rightMargin ?? RIGHT_MARGIN_DEFAULT);
+
   const [isDraggingLeft, setIsDraggingLeft] = useState(false);
   const [isDraggingRight, setIsDraggingRight] = useState(false);
   const rulerRef = useRef<HTMLDivElement>(null);
@@ -31,6 +34,7 @@ export const Ruler = () => {
   const handleMouseMove = (e: React.MouseEvent) => {
     const PAGE_WIDTH = 816;
     const MINIMUM_SPACE = 100;
+
     if ((isDraggingLeft || isDraggingRight) && rulerRef.current) {
       const container = rulerRef.current.querySelector("#ruler-container");
 
@@ -40,15 +44,17 @@ export const Ruler = () => {
         const rawPosition = Math.max(0, Math.min(PAGE_WIDTH, relativeX));
 
         if (isDraggingLeft) {
-          const maxLeftPosition = PAGE_WIDTH - rightMargin - MINIMUM_SPACE;
+          const maxLeftPosition =
+            PAGE_WIDTH - rightMarginNumber - MINIMUM_SPACE;
           const newLeftPosition = Math.min(rawPosition, maxLeftPosition);
           setLeftMargin(newLeftPosition); //Make Collaborative
         } else if (isDraggingRight) {
-          const maxRightPosition = PAGE_WIDTH - (leftMargin + MINIMUM_SPACE);
+          const maxRightPosition =
+            PAGE_WIDTH - (leftMarginNumber + MINIMUM_SPACE);
           const newRightPosition = Math.max(PAGE_WIDTH - rawPosition, 0);
           const constraintRightPosition = Math.min(
             newRightPosition,
-            maxRightPosition
+            maxRightPosition,
           );
           setRightMargin(constraintRightPosition);
         }
@@ -78,19 +84,20 @@ export const Ruler = () => {
     >
       <div id="ruler-container" className=" w-full h-full relative">
         <Marker
-          position={leftMargin}
+          position={leftMarginNumber} // use the number
           isLeft={true}
           isDragging={isDraggingLeft}
           onMouseDown={handleLeftMouseDown}
           onDoubleClick={handleLeftDoubleClick}
         />
         <Marker
-          position={rightMargin}
+          position={rightMarginNumber} // use the number
           isLeft={false}
           isDragging={isDraggingRight}
           onMouseDown={handleRightMouseDown}
           onDoubleClick={handleRightDoubleClick}
         />
+
         <div className="absolute inset-x-0 bottom-0 h-full">
           <div className="relative h-full w-[816px]">
             {markers.map((marker) => {
