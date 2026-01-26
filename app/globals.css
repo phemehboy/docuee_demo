@@ -1,26 +1,739 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --color-bgColor: #000319;
+  --color-bodyText: #ffffff;
+  --color-black-100: #000319;
+  --color-black-200: rgba(17, 25, 40, 0.75);
+  --color-black-300: rgba(255, 255, 255, 0.125);
+  --color-black-400: #1a1d21;
+  --color-black-500: #363a3d;
+  --color-black-600: #76828d;
+  --color-black-700: #abb8c4;
+  --color-black-800: #0b1527;
+  --color-black-900: #0f1c34;
+  --color-blue-100: #e4ecff;
+  --color-blue-200: #234184;
+  --color-blue-400: #417bff;
+  --color-blue-500: #3371ff;
+  --color-blue-600: #152432;
+  --color-green-600: #0d2a1f;
+  --color-red-600: #3e1716;
+  --color-purple: #ac6aff;
+  --color-purple-500: #cbacf9;
 }
 
-@theme inline {
+.h2 {
+  @apply text-[1.75rem] leading-10 md:text-[2rem] md:leading-10 lg:text-[2.5rem] lg:leading-14 xl:text-[3rem] xl:leading-tight;
+}
+
+.h3 {
+  @apply text-[2rem] leading-normal md:text-[2.5rem];
+}
+
+.h4 {
+  @apply text-[2rem] leading-normal;
+}
+
+.h5 {
+  @apply text-2xl leading-normal;
+}
+
+.h6 {
+  @apply font-semibold text-lg leading-8;
+}
+
+.body-1 {
+  @apply text-[0.875rem] leading-6 md:text-[1rem] md:leading-7 lg:text-[1.25rem] lg:leading-8;
+}
+
+.body-2 {
+  @apply font-light text-[0.875rem] leading-6 md:text-base;
+}
+
+@media print {
+  /* Set custom page margins: small top/bottom, no clipping sides */
+  @page {
+    size: auto;
+    margin: 2cm 0; /* 0.8cm top & bottom, 0 left/right */
+  }
+
+  /* Make content take full width */
+  .editor-print-wrapper {
+    position: static !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: auto !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    box-sizing: border-box;
+  }
+
+  /* Allow content to break across pages but avoid awkward breaks */
+  .editor-print-wrapper * {
+    page-break-inside: avoid;
+  }
+
+  p,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  ul,
+  ol,
+  table {
+    page-break-inside: avoid;
+    page-break-after: auto;
+    page-break-before: auto;
+  }
+
+  /* Tables should not overflow */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    table-layout: auto;
+  }
+
+  /* Remove default padding and margins from body/html */
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Hide UI elements that shouldn't appear in print */
+  .tooltip,
+  .tooltip-content,
+  .anchored-threads,
+  .floating-threads,
+  .floating-composer [role="tooltip"],
+  .tooltip-trigger:hover + .tooltip-content,
+  .tooltip-visible {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+  }
+
+  .pt-10 {
+    padding-top: 0 !important;
+  }
+}
+
+/* For desktop */
+.anchored-threads {
+  display: block;
+  max-width: 300px;
+  width: 100%;
+  position: absolute;
+  right: 12px;
+}
+
+.floating-toolbar {
+  background: #1e40af; /* nice blue background */
+  padding: 8px 12px;
+  border-radius: 6px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  gap: 8px;
+  color: white;
+
+  /* Add these to ensure no wrapping and consistent width */
+  white-space: nowrap;
+  max-width: max-content;
+  align-items: center;
+}
+
+.floating-toolbar button {
+  background: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+  user-select: none;
+}
+
+.floating-toolbar button:hover,
+.floating-toolbar button.is-active {
+  background: #2563eb; /* lighter blue on hover or active */
+}
+
+.tiptap p.is-editor-empty:first-child::before {
+  color: #adb5bd;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+/* tiptap style start */
+.tiptap {
+  /* Link styles */
+  a {
+    @apply text-blue-700;
+    cursor: pointer;
+
+    &:hover {
+      @apply underline;
+    }
+  }
+
+  /* Remove extra top margin for first element */
+  :first-child {
+    margin-top: 0;
+  }
+
+  /* Mark Highlight styles */
+  mark {
+    background-color: #faf594;
+    border-radius: 0.4rem;
+    box-decoration-break: clone;
+    padding: 0.1rem 0.3rem;
+  }
+
+  /* List styles */
+  ul,
+  ol {
+    padding: 0 1rem;
+    margin: 0.5rem 1rem 0.5rem 0.4rem;
+  }
+
+  ul li {
+    list-style-type: disc;
+    p {
+      margin-top: 0.25em;
+      margin-bottom: 0.25em;
+    }
+  }
+
+  ol li {
+    list-style-type: decimal;
+    p {
+      margin-top: 0.25em;
+      margin-bottom: 0.25em;
+    }
+  }
+
+  /* Task list specific styles */
+  ul[data-type="taskList"] {
+    list-style: none;
+    margin-left: 0;
+    padding: 0;
+
+    li {
+      align-items: flex-start;
+      display: flex;
+
+      > label {
+        flex: 0 0 auto;
+        margin-right: 0.5rem;
+        user-select: none;
+      }
+
+      > div {
+        flex: 1 1 auto;
+      }
+    }
+
+    input[type="checkbox"] {
+      cursor: pointer;
+    }
+
+    ul[data-type="taskList"] {
+      margin: 0;
+    }
+  }
+
+  /* Heading styles */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    line-height: 1.1;
+    text-wrap: pretty;
+    margin-top: 2rem; /* Reduced default top spacing */
+    margin-bottom: 0.75rem; /* Reduced default bottom spacing */
+  }
+
+  /* Specific sizes */
+  h1 {
+    font-size: 1.4rem;
+  }
+  h2 {
+    font-size: 1.2rem;
+  }
+  h3 {
+    font-size: 1.1rem;
+  }
+  h4,
+  h5,
+  h6 {
+    font-size: 1rem;
+  }
+
+  /* Tighten space between consecutive headings */
+  h1 + h2,
+  h1 + h3,
+  h2 + h3 {
+    margin-top: 0.5rem;
+  }
+
+  /* Tighten space between paragraph and heading */
+  p + h1,
+  p + h2,
+  p + h3 {
+    margin-top: 1rem;
+  }
+
+  /* Table-specific styling */
+  table {
+    border-collapse: collapse;
+    margin: 0;
+    overflow: hidden;
+    table-layout: fixed;
+    width: 100%;
+
+    td,
+    th {
+      border: 1px solid black;
+      box-sizing: border-box;
+      min-width: 1em;
+      padding: 6px 8px;
+      position: relative;
+      vertical-align: top;
+
+      > * {
+        margin-bottom: 0;
+      }
+    }
+
+    th {
+      background-color: #c7c7c7;
+      font-weight: bold;
+      text-align: left;
+    }
+
+    .selectedCell:after {
+      background: #929292;
+      content: "";
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      pointer-events: none;
+      position: absolute;
+      z-index: 2;
+    }
+
+    .column-resize-handle {
+      background-color: var(--purple);
+      bottom: -2px;
+      pointer-events: none;
+      position: absolute;
+      right: -2px;
+      top: 0;
+      width: 4px;
+    }
+  }
+
+  .tableWrapper {
+    margin: 1.5rem 0;
+    overflow-x: auto;
+  }
+
+  &.resize-cursor {
+    cursor: ew-resize;
+    cursor: col-resize;
+  }
+
+  img {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    display: block;
+    height: auto;
+    margin: 1.5rem 0;
+    max-width: 100%;
+
+    &.ProseMirror-selectednode {
+      outline: 3px solid var(--purple);
+    }
+  }
+}
+
+/* For mobile */
+.floating-threads {
+  display: none;
+}
+
+/* For desktop */
+.anchored-threads {
+  display: block;
+  max-width: 300px;
+  width: 100%;
+  position: absolute;
+  right: 12px;
+}
+
+@media (max-width: 640px) {
+  .floating-threads {
+    display: block;
+  }
+
+  .anchored-threads {
+    display: none;
+  }
+}
+
+div[data-radix-popper-content-wrapper] {
+  z-index: 50 !important;
+}
+
+.notification-button div {
+  background-color: #0f1c34;
+}
+
+.markdown a {
+  color: #1da1f2;
+}
+
+.markdown a,
+code {
+  /* These are technically the same, but use both */
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+
+  -ms-word-break: break-all;
+  /* This is the dangerous one in WebKit, as it breaks things wherever */
+  word-break: break-all;
+  /* Instead use this non-standard one: */
+  word-break: break-word;
+
+  /* Adds a hyphen where the word breaks, if supported (No Blink) */
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+
+  padding: 2px;
+  color: #ff7000 !important;
+}
+
+.markdown pre {
+  display: grid;
+  width: 100%;
+}
+
+.markdown pre code {
+  width: 100%;
+  display: block;
+  overflow-x: auto;
+
+  color: inherit !important;
+}
+
+.loader {
+  position: fixed; /* Fixes it to the viewport */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(36, 33, 33, 0.568); /* Transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure it's on top of other elements */
+}
+
+/* Hide scrollbar on mobile */
+@media (max-width: 1024px) {
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none; /* IE 10+ */
+    scrollbar-width: none; /* Firefox */
+  }
+}
+
+/* Example gradient */
+.gradient-blue {
+  @apply bg-gradient-to-t from-blue-500 to-blue-400;
+}
+
+.gradient-green {
+  @apply bg-gradient-to-t from-green-500 to-green-400;
+}
+
+.gradient-purple {
+  @apply bg-gradient-to-t from-purple-500 to-purple-400;
+}
+
+.gradient-red {
+  @apply bg-gradient-to-t from-red-500 to-red-400;
+}
+
+/* ======================== Auth Pages */
+.auth-page {
+  @apply flex h-screen w-full flex-col items-center justify-center gap-10;
+}
+
+/* ======================== Home Page */
+.home-container {
+  @apply relative flex flex-col gap-5 sm:gap-10 bg-black-100 w-full min-h-screen;
+  -webkit-overflow-scrolling: touch;
+}
+
+.project-home-container {
+  @apply relative flex min-h-screen w-full flex-col items-center gap-5 sm:gap-10;
+}
+
+.select-item {
+  @apply hover:bg-blue-100 dark:hover:bg-blue-900 cursor-pointer;
+}
+
+.text-box {
+  @apply mt-1 w-full rounded-md border border-gray-300 dark:border-gray-600 px-4 py-2 text-sm shadow-sm focus:border-blue-600 focus:ring-blue-600 placeholder:text-gray-400 transition-all;
+}
+
+.select-content {
+  @apply bg-white dark:bg-slate-900;
+}
+
+.select-trigger {
+  @apply w-full focus:ring-blue-500 focus:border-blue-500 cursor-pointer;
+}
+
+/* @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+} */
+
+:root {
+  --radius: 0.625rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+}
+
+@keyframes arrowMove {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+  100% {
+    transform: translateX(0);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@keyframes pulseDiagonal {
+  0%,
+  100% {
+    transform: rotate(-45deg) translateX(0);
+  }
+  50% {
+    transform: rotate(-45deg) translateX(10px);
+  }
+}
+
+@keyframes scroll {
+  to {
+    transform: translate(calc(-50% - 0.5rem));
+  }
+}
+
+@keyframes caret-blink {
+  0%,
+  70%,
+  100% {
+    opacity: 1;
+  }
+  20%,
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes accordion-down {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+  }
+}
+
+@keyframes accordion-up {
+  from {
+    height: var(--radix-accordion-content-height);
+  }
+  to {
+    height: 0;
+  }
+}
+
+@keyframes spotlight {
+  0% {
+    opacity: 0;
+    transform: translate(-72%, -62%) scale(0.5);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -40%) scale(1);
+  }
+}
+
+@keyframes pulseGlow {
+  0%,
+  100% {
+    box-shadow: 0 0 0px rgba(59, 130, 246, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.9);
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 1s infinite;
+}
+
+.animate-spotlight {
+  animation: spotlight 2s ease 0.75s forwards;
+}
+
+.animate-accordion-down {
+  animation: accordion-down 0.2s ease-out;
+}
+
+.animate-accordion-up {
+  animation: accordion-up 0.2s ease-out;
+}
+
+.animate-caret-blink {
+  animation: caret-blink 1.25s ease-out infinite;
+}
+
+.animate-scroll {
+  animation: scroll var(--animation-duration, 40s)
+    var(--animation-direction, forwards) linear infinite;
+}
+
+.animate-pulse-diagonal {
+  animation: pulseDiagonal 1.5s ease-in-out infinite;
+}
+
+.animate-arrow {
+  animation: arrowMove 1.5s ease-in-out infinite;
 }

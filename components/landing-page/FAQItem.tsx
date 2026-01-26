@@ -1,0 +1,61 @@
+"use client";
+import { FaqProps } from "@/types";
+import clsx from "clsx";
+import React, { useState } from "react";
+
+const FAQItem = ({ item, index }: FaqProps) => {
+  const [activeId, setActiveId] = useState<number | null>(null);
+  const active = activeId === item.id;
+
+  return (
+    <div className="relative z-2 mb-10">
+      <div
+        className="group relative flex cursor-pointer items-center justify-between gap-10 px-7"
+        onClick={() => setActiveId(active ? null : item.id)}
+      >
+        <div className="flex-1">
+          <div className="small-compact mb-1.5 text-purple max-lg:hidden">
+            {index < 10 ? "0" : ""}
+            {index}
+          </div>
+          <div className="text-[20px] font-medium leading-9 tracking-tight">
+            {item.question}
+          </div>
+        </div>
+
+        <div
+          className={clsx(
+            "relative flex size-12 items-center justify-center rounded-full transition-all duration-300",
+            active && "rotate-45",
+          )}
+        >
+          <div className="bg-doc bg-cover size-11/12 rounded-full shadow-300" />
+        </div>
+      </div>
+
+      {/* Answer */}
+      <div
+        className={clsx(
+          "overflow-hidden transition-all duration-500 ease-in-out",
+          active
+            ? "max-h-96 opacity-100 px-4 py-4 lg:px-7 lg:py-3.5"
+            : "max-h-0 opacity-0 px-4 py-0",
+        )}
+      >
+        <div className="body-2 text-n-3">{item.answer}</div>
+      </div>
+
+      <div
+        className={clsx(
+          "absolute -bottom-7 -top-7 left-0 right-0 -z-1 rounded-3xl bg-black-700 opacity-0 transition-opacity duration-300",
+          active && "opacity-100",
+        )}
+      >
+        <div className="absolute inset-0.5 -z-1 rounded-3xl bg-black-100" />
+        <div className="absolute left-8 top-0 h-0.5 w-40 bg-purple-600" />
+      </div>
+    </div>
+  );
+};
+
+export default FAQItem;
