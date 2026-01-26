@@ -75,7 +75,9 @@ export default function EditProfileModal({
 
       // === DEMO: simulate saving without updating anything ===
       await new Promise((resolve) => setTimeout(resolve, 1000)); // wait 1 second
-      const updatedProfile = { ...profile, ...form }; // just merge form locally
+
+      // Merge form locally and cast to IUser for TypeScript
+      const updatedProfile = { ...profile, ...form } as unknown as IUser;
 
       toast.success("Profile updated! (demo mode)");
       onUpdated(updatedProfile); // still call callback so UI updates
