@@ -1,4 +1,4 @@
-import { Schema, model, models, Document } from "mongoose";
+import { Schema, model, models, Document, Types } from "mongoose";
 import "@/lib/database/registerModels";
 import { IUser } from "./user.model";
 import { ICourse } from "./course.model";
@@ -10,7 +10,7 @@ import { IStudyMode } from "./studyMode.model";
 import { IDesignation } from "./designation.model";
 
 export interface IInstructor extends Document {
-  _id: string;
+  _id: Types.ObjectId;
   userId: Schema.Types.ObjectId | IUser;
   schoolId: Schema.Types.ObjectId | ISchool;
   department: (Schema.Types.ObjectId | IDepartment)[];

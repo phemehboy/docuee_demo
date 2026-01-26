@@ -1,8 +1,8 @@
 // models/Expertise.ts
-import { Document, model, models, Schema } from "mongoose";
+import { Document, model, models, Schema, Types } from "mongoose";
 
 export interface IExpertise extends Document {
-  _id: string;
+  _id: Types.ObjectId;
   name: string;
   school: Schema.Types.ObjectId;
 }

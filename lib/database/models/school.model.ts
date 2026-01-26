@@ -1,5 +1,5 @@
 import "@/lib/database/registerModels";
-import { Document, model, models, Schema } from "mongoose";
+import { Document, model, models, Schema, Types } from "mongoose";
 
 export interface IPromotionMap {
   fromLevel: Schema.Types.ObjectId;
@@ -28,7 +28,7 @@ export interface IPromotionSettings {
 }
 
 export interface ISchool extends Document {
-  _id: string;
+  _id: Types.ObjectId;
   adminId: Schema.Types.ObjectId;
   name: string;
   location: string;
@@ -76,7 +76,7 @@ const PromotionHistorySchema = new Schema(
       level: { type: String },
     },
   },
-  { _id: false }
+  { _id: false },
 );
 
 const PromotionMapSchema = new Schema(
@@ -93,7 +93,7 @@ const PromotionMapSchema = new Schema(
       },
     ],
   },
-  { _id: false }
+  { _id: false },
 );
 
 const ProgramOverrideSchema = new Schema(
@@ -107,7 +107,7 @@ const ProgramOverrideSchema = new Schema(
     autoGraduateOnFinal: { type: Boolean },
     mode: { type: String, enum: ["automatic", "manual", "hybrid"] },
   },
-  { _id: false }
+  { _id: false },
 );
 
 const PromotionSettingsSchema = new Schema(
@@ -126,7 +126,7 @@ const PromotionSettingsSchema = new Schema(
     promotionMap: [PromotionMapSchema],
     programOverrides: { type: [ProgramOverrideSchema], default: [] },
   },
-  { _id: false }
+  { _id: false },
 );
 
 const SessionSchema = new Schema({
@@ -173,7 +173,7 @@ const SchoolSchema = new Schema<ISchool>(
 
     promotionSettings: { type: PromotionSettingsSchema, default: {} },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const School = models.School || model<ISchool>("School", SchoolSchema);

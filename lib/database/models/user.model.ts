@@ -10,7 +10,7 @@ import { IStudyMode } from "./studyMode.model";
 export type UserType = "instructor" | "supervisor" | "student" | "schoolAdmin";
 
 export interface IUser extends Document {
-  _id: string;
+  _id: Types.ObjectId;
   clerkId: string;
   firstName: string;
   lastName: string;
@@ -286,7 +286,7 @@ const UserSchema = new Schema(
       { type: Schema.Types.ObjectId, ref: "Organization" },
     ],
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const User = models.User || model("User", UserSchema);

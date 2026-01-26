@@ -3,7 +3,7 @@ import { Schema, model, models, Document, Types } from "mongoose";
 import { IProgram } from "./program.model";
 
 export interface ILevel extends Document {
-  _id: string;
+  _id: Types.ObjectId;
   name: string;
   rank: number;
   abbreviation?: string;
@@ -29,7 +29,7 @@ const LevelSchema = new Schema<ILevel>(
       required: true,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 // ✅ Index to prevent duplicate levels in same program

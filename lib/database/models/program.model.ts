@@ -3,7 +3,7 @@ import "@/lib/database/registerModels";
 import { Document, model, models, Schema, Types } from "mongoose";
 
 export interface IProgram extends Document {
-  _id: string;
+  _id: Types.ObjectId;
   type: string; // ✅ Changed from ObjectId to string
   department: { _id: string; name: string } | Types.ObjectId;
   school: Schema.Types.ObjectId;

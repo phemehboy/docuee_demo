@@ -1,8 +1,9 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 import { ISchool } from "./school.model";
+import { Types } from "mongoose";
 
 export interface ISemester extends Document {
-  _id: string;
+  _id: Types.ObjectId;
   name: string;
   schoolId: Schema.Types.ObjectId | ISchool;
   startDate?: Date;
@@ -24,7 +25,7 @@ const SemesterSchema: Schema = new Schema(
     endDate: { type: Date },
     isCustom: { type: Boolean, default: false },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 SemesterSchema.index({ name: 1, schoolId: 1 }, { unique: true });

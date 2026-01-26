@@ -199,11 +199,11 @@ const ProjectSchema = new Schema<IProject>(
     session: { type: String, required: false },
     convexProjectId: { type: String, default: null },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 // ✅ Unique topic validation
-ProjectSchema.pre("save", function (next) {
+ProjectSchema.pre("save", async function (this: IProject) {
   const projectTopics = this.projectTopics || {};
   const topics = [
     projectTopics.topicOne?.topic,
@@ -211,9 +211,10 @@ ProjectSchema.pre("save", function (next) {
     projectTopics.topicThree?.topic,
     projectTopics.topicFour?.topic,
   ].filter(Boolean);
-  if (new Set(topics).size !== topics.length)
-    return next(new Error("Project topics must be unique."));
-  next();
+
+  if (new Set(topics).size !== topics.length) {
+    throw new Error("Project topics must be unique.");
+  }
 });
 
 const Project = models.Project || model<IProject>("Project", ProjectSchema);

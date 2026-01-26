@@ -1,8 +1,8 @@
 import "@/lib/database/registerModels";
-import { Document, model, models, Schema } from "mongoose";
+import { Document, model, models, Schema, Types } from "mongoose";
 
 export interface IDesignation extends Document {
-  _id: string;
+  _id: Types.ObjectId;
   name: string;
   school: Schema.Types.ObjectId;
 }

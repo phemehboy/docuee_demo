@@ -9,7 +9,7 @@ import { IStudyMode } from "./studyMode.model";
 import { ISemester } from "./semester.model";
 
 export interface IStudent extends Document {
-  _id: string;
+  _id: Types.ObjectId;
   userId: Types.ObjectId | IUser;
   supervisor: Types.ObjectId | IUser;
   school: Types.ObjectId | ISchool;
@@ -53,7 +53,7 @@ const StudentSchema = new Schema<IStudent>(
     group: { type: Schema.Types.ObjectId, ref: "Group" },
     approved: { type: Boolean, default: false },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const Student = models.Student || model<IStudent>("Student", StudentSchema);

@@ -7,9 +7,10 @@ import { IDepartment } from "./department.model";
 import { ILevel } from "./level.model";
 import { ISemester } from "./semester.model";
 import { IStudyMode } from "./studyMode.model";
+import { Types } from "mongoose";
 
 export interface ICourse extends Document {
-  _id: string;
+  _id: Types.ObjectId;
   title: string;
   code: string;
   description: string;
@@ -40,16 +41,20 @@ const CourseSchema = new Schema<ICourse>(
     instructors: [{ type: Schema.Types.ObjectId, ref: "Instructor" }],
     students: [{ type: Schema.Types.ObjectId, ref: "Student" }],
     startDate: { type: Date },
+
     endDate: {
       type: Date,
       required: true,
       validate: {
-        validator: function (this: ICourse) {
-          return this.startDate < this.endDate;
+        validator: function (value: Date) {
+          // TypeScript cannot infer `this` here, so cast it
+          const doc = this as unknown as ICourse;
+          return doc.startDate < value;
         },
         message: "endDate must be after startDate",
       },
     },
+
     thumbnail: { type: String, required: true },
     creatorId: { type: Schema.Types.ObjectId, ref: "User" },
     department: {
@@ -73,7 +78,7 @@ const CourseSchema = new Schema<ICourse>(
     creditUnits: { type: Number, default: 3 }, // optional
     courseType: { type: String, enum: ["core", "elective"], default: "core" },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const Course = models.Course || model<ICourse>("Course", CourseSchema);

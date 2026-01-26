@@ -1,7 +1,7 @@
-import { Document, model, models, Schema } from "mongoose";
+import { Document, model, models, Schema, Types } from "mongoose";
 
 export interface IStudyLevel extends Document {
-  _id: string;
+  _id: Types.ObjectId;
   name: string;
 }
 

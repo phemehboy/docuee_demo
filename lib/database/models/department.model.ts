@@ -1,8 +1,9 @@
 import "@/lib/database/registerModels";
+import { Types } from "mongoose";
 import { Document, model, models, Schema } from "mongoose";
 
 export interface IDepartment extends Document {
-  _id: string;
+  _id: Types.ObjectId;
   name: string;
   school: Schema.Types.ObjectId; // Added school reference
   description?: string;
@@ -16,7 +17,7 @@ const DepartmentSchema = new Schema(
     school: { type: Schema.Types.ObjectId, ref: "School", required: true }, // new field
     description: { type: String },
   },
-  { timestamps: true } // 👈 this adds createdAt & updatedAt
+  { timestamps: true }, // 👈 this adds createdAt & updatedAt
 );
 
 // 🛡️ Ensure unique level name per school
