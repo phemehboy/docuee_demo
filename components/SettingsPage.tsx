@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { toast } from "@/components/hooks/use-toast";
 import Toggle from "@/components/ui/Toggle";
 import { UserCog } from "lucide-react";
 import { IUserClient } from "@/types/user";
@@ -23,6 +22,7 @@ import {
   SelectValue,
 } from "./ui/select";
 import SupportBanner from "./SupportBanner";
+import { toast } from "sonner";
 
 interface Bank {
   name: string;
@@ -72,13 +72,12 @@ const SettingsPage = ({ initialUser }: Props) => {
       user.useCreditsAutomatically = newValue;
       setUser(user);
 
-      toast({
-        description: `Automatic credit usage ${newValue ? "enabled" : "disabled"}.`,
-      });
+      toast.success(
+        `Automatic credit usage ${newValue ? "enabled" : "disabled"}.`,
+      );
     } catch (error) {
       console.error("Error updating toggle:", error);
-      toast({
-        variant: "destructive",
+      toast.error("Error", {
         description: "Failed to update your credit usage preference.",
       });
     } finally {
@@ -104,15 +103,13 @@ const SettingsPage = ({ initialUser }: Props) => {
         rewardPreference: preference,
       }));
 
-      toast({
-        description:
-          preference === "credits"
-            ? "Future earnings will be saved as credits."
-            : "Future earnings will be saved for withdrawal.",
-      });
+      toast.success(
+        preference === "credits"
+          ? "Future earnings will be saved as credits."
+          : "Future earnings will be saved for withdrawal.",
+      );
     } catch {
-      toast({
-        variant: "destructive",
+      toast.error("Error", {
         description: "Failed to update earnings preference.",
       });
     } finally {
@@ -173,8 +170,7 @@ const SettingsPage = ({ initialUser }: Props) => {
         setBanks(data);
       } catch (error) {
         console.error("Failed to fetch banks:", error);
-        toast({
-          variant: "destructive",
+        toast.error("Error", {
           description: "Failed to load bank list",
         });
       } finally {
@@ -580,16 +576,14 @@ const SettingsPage = ({ initialUser }: Props) => {
                       const data = await res.json();
                       if (!res.ok) throw new Error(data.message);
 
-                      toast({
-                        description:
-                          "Payout account verified and saved successfully.",
-                      });
+                      toast.success(
+                        "Payout account verified and saved successfully.",
+                      );
 
                       setShowPayoutDialog(false);
                       window.location.reload();
                     } catch (err: any) {
-                      toast({
-                        variant: "destructive",
+                      toast.error("Error", {
                         description:
                           err.message || "Failed to save payout account.",
                       });

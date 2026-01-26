@@ -44,7 +44,6 @@ import { Input } from "@/components/ui/input";
 
 import { useSearchParams } from "next/navigation";
 
-import { toast } from "@/components/hooks/use-toast";
 import Link from "next/link";
 import { Doc } from "@/convex/_generated/dataModel";
 import { useUser } from "@clerk/nextjs";
@@ -61,6 +60,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { toast } from "sonner";
 interface ToolbarButtonProps {
   onClick?: () => void;
   isActive?: boolean;
@@ -713,9 +713,7 @@ const ToolbarButton = ({
 }: ToolbarButtonProps) => {
   const handleClick = () => {
     if (disabled && !isAssignedSupervisor) {
-      toast({
-        variant: "destructive",
-        title: "Premium Feature",
+      toast.error("Error", {
         description: (
           <div className="flex flex-col gap-y-2">
             <span className="text-sm lg:text-base">

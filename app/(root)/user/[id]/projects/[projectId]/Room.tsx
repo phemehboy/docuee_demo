@@ -8,9 +8,9 @@ import {
 } from "@liveblocks/react/suspense";
 import { FullScreenLoader } from "@/components/FullScreenLoader";
 import { getClerkUsers, getProjects } from "@/lib/actions/user.action";
-import { toast } from "@/components/hooks/use-toast";
 import { Id } from "@/convex/_generated/dataModel";
 import { LEFT_MARGIN_DEFAULT, RIGHT_MARGIN_DEFAULT } from "@/constants/margins";
+import { toast } from "sonner";
 
 type User = {
   id: string;
@@ -45,13 +45,10 @@ export function Room({
         const list = await getClerkUsers();
         setUsers(list);
       } catch {
-        toast({
-          variant: "destructive",
-          description: "Failed to fetch users",
-        });
+        toast.error("Error", { description: "Failed to fetch users" });
       }
     },
-    []
+    [],
   );
 
   useEffect(() => {
@@ -64,7 +61,7 @@ export function Room({
       () => {
         reauthorizeLiveblocks(room);
       },
-      25 * 60 * 1000
+      25 * 60 * 1000,
     ); // 25 minutes
     return () => clearInterval(interval);
   }, [room]);
@@ -93,9 +90,7 @@ export function Room({
 
       if (response.status === 401 || response.status === 403) {
         // Don't force login
-        toast({
-          description: "Your session has expired. Attempting to reconnect…",
-        });
+        toast.success("Your session has expired. Attempting to reconnect…");
         // Optionally retry automatically
         setTimeout(() => reauthorizeLiveblocks(room), 3000);
         return;
@@ -104,8 +99,7 @@ export function Room({
       if (!response.ok) throw new Error("Failed to reauthorize");
     } catch (err) {
       console.error("Liveblocks reauth failed:", err);
-      toast({
-        variant: "destructive",
+      toast.error("Error", {
         description: "Connection lost. Reconnecting…",
       });
     }
@@ -126,9 +120,7 @@ export function Room({
             });
 
             if (response.status === 401 || response.status === 403) {
-              toast({
-                description: "Session expired. Retrying…",
-              });
+              toast.success("Session expired. Retrying…");
               if (retries > 0) {
                 await new Promise((res) => setTimeout(res, 2000));
                 return attempt(retries - 1);
@@ -145,8 +137,7 @@ export function Room({
               await new Promise((res) => setTimeout(res, 2000));
               return attempt(retries - 1);
             }
-            toast({
-              variant: "destructive",
+            toast.error("Error", {
               description: err.message || "Failed to connect to project.",
             });
             throw err;
@@ -157,14 +148,14 @@ export function Room({
       }}
       resolveUsers={({ userIds }) =>
         userIds.map(
-          (userId) => users.find((user) => user.id === userId) ?? undefined
+          (userId) => users.find((user) => user.id === userId) ?? undefined,
         )
       }
       resolveMentionSuggestions={({ text }) => {
         let filteredUsers = users;
         if (text) {
           filteredUsers = users.filter((user) =>
-            user.name.toLowerCase().includes(text.toLowerCase())
+            user.name.toLowerCase().includes(text.toLowerCase()),
           );
         }
         return filteredUsers.map((user) => user.id);

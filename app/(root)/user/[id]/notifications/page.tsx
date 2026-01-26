@@ -22,7 +22,6 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { toast } from "@/components/hooks/use-toast";
 import { getNotificationIcon } from "@/lib/getNotificationIcon";
 import { getUserById } from "@/lib/actions/user.action";
 import { getAnnouncementHref } from "@/lib/getAnnouncementHref";
@@ -32,6 +31,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { toast } from "sonner";
 
 type Notification = {
   _id: string;
@@ -109,11 +109,7 @@ export default function NotificationsPage() {
       setDeleteDialogOpen(false);
       setNotificationToDelete(null);
 
-      toast({
-        title: "Notification deleted",
-        description: "The notification has been successfully deleted.",
-        variant: "default",
-      });
+      toast.success("The notification has been successfully deleted.");
     },
   });
 

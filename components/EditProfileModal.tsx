@@ -11,7 +11,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { toast } from "@/components/hooks/use-toast";
 import { IUser } from "@/lib/database/models/user.model";
 import { updateUserById } from "@/lib/actions/user.action";
 
@@ -25,6 +24,7 @@ import {
   SelectValue,
 } from "./ui/select";
 import TagInput from "./TagInput";
+import { toast } from "sonner";
 
 type Gender = "male" | "female" | "other" | "";
 
@@ -73,15 +73,16 @@ export default function EditProfileModal({
     try {
       setSaving(true);
 
-      const updatedProfile = await updateUserById(profile._id, form);
-      toast({ title: "Profile updated!" });
-      onUpdated(updatedProfile);
+      // === DEMO: simulate saving without updating anything ===
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // wait 1 second
+      const updatedProfile = { ...profile, ...form }; // just merge form locally
+
+      toast.success("Profile updated! (demo mode)");
+      onUpdated(updatedProfile); // still call callback so UI updates
       onClose();
     } catch (error: any) {
-      toast({
-        title: "Error",
+      toast.error("Error", {
         description: error.message || "Failed to update profile",
-        variant: "destructive",
       });
     } finally {
       setSaving(false);

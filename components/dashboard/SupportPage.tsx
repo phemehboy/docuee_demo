@@ -76,10 +76,7 @@ Your support request has been simulated.`);
 
       if (!res.ok) throw new Error();
 
-      toast({
-        title: "Submitted",
-        description: "Your support request has been sent",
-      });
+      toast.success("Your support request has been sent");
 
       setForm({
         type: "",
@@ -89,10 +86,8 @@ Your support request has been simulated.`);
         severity: "medium",
       });
     } catch {
-      toast({
-        title: "Error",
+      toast.error("Error", {
         description: "Failed to submit request",
-        variant: "destructive",
       });
     } finally {
       setLoading(false);
