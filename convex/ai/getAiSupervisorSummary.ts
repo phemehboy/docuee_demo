@@ -1,4 +1,3 @@
-// convex/ai/getAISupervisorSummary.ts
 import { v } from "convex/values";
 import { query } from "../_generated/server";
 
@@ -13,7 +12,7 @@ export const getAISupervisorSummary = query({
     const insertions = await ctx.db
       .query("aiInsertions")
       .withIndex("by_project_stage", (q) =>
-        q.eq("projectId", projectId).eq("stageKey", stageKey)
+        q.eq("projectId", projectId).eq("stageKey", stageKey),
       )
       .collect();
 
@@ -39,8 +38,8 @@ export const getAISupervisorSummary = query({
         ctx.db
           .query("aiContentState")
           .withIndex("by_insertion", (q) => q.eq("aiInsertionId", i._id))
-          .first()
-      )
+          .first(),
+      ),
     );
 
     let deletedCount = 0;
