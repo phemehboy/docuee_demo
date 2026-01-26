@@ -3,9 +3,9 @@
 import { UpdateOrgProps } from "@/types";
 import { connectToDatabase } from "../database";
 import { handleError } from "../utils";
-import Organization from "../database/models/organization.model";
 import { updateInvitation } from "./user.action";
 import User from "../database/models/user.model";
+import Organization from "../database/models/organization.model";
 
 export async function createUserOrganization(userId: string) {
   const user = await User.findById(userId);

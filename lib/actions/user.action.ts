@@ -16,7 +16,6 @@ import { auth, clerkClient } from "@clerk/nextjs/server";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import Project from "../database/models/project.model";
-import Instructor from "../database/models/instructor.model";
 import { nanoid } from "nanoid";
 
 import console from "console";
@@ -24,16 +23,18 @@ import Student from "../database/models/student.model";
 import mongoose from "mongoose";
 import { Types } from "mongoose";
 import Department from "../database/models/department.model";
-import Level from "../database/models/level.model";
 import { sendDocueeEmail } from "../email/sendDocueeEmail";
-import Organization, {
-  MemberEntry,
-} from "../database/models/organization.model";
+
 import "@/lib/database/models/group.model";
 import { getConvexClient } from "../convex/convexClient";
 import StudyMode from "../database/models/studyMode.model";
 import { createUserOrganization } from "./organization.action";
 import { getDashboardPath, handleError } from "../utils";
+import Instructor from "../database/models/instructor.model";
+import Level from "../database/models/level.model";
+import Organization, {
+  MemberEntry,
+} from "../database/models/organization.model";
 
 const convexClient = getConvexClient();
 

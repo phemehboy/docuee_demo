@@ -10,15 +10,15 @@ import Project, {
   OverallStatus,
   Status,
 } from "../database/models/project.model";
-import Department from "../database/models/department.model";
 import School from "../database/models/school.model";
 import { sendDocueeEmail } from "../email/sendDocueeEmail";
-import Organization from "../database/models/organization.model";
 import Student from "../database/models/student.model";
 import { buildInitialSubmissionStages } from "../initProjectStages/initProjectStages";
-import Group from "../database/models/group.model";
 import { buildIndependentSubmissionStages } from "../initProjectStages/independentSubmissionStages";
 import { createProjectNotification } from "./project-notification.action";
+import Organization from "../database/models/organization.model";
+import Group from "../database/models/group.model";
+import Department from "../database/models/department.model";
 
 export async function getStudentProject(studentId: string) {
   try {
