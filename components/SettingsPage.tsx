@@ -3,8 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import { toast } from "@/components/hooks/use-toast";
 import Toggle from "@/components/ui/Toggle";
-import ChangeRequestForm from "./ChangeRequestForm";
-import ChangeRequestHistory from "./history/ChangeRequestHistory";
 import { UserCog } from "lucide-react";
 import { IUserClient } from "@/types/user";
 import {
@@ -33,24 +31,12 @@ interface Bank {
 
 interface Props {
   initialUser: IUserClient;
-  existingRequest: boolean;
-  requestHistory: any[];
 }
 
-const SettingsPage = ({
-  initialUser,
-  existingRequest: initialExistingRequest,
-  requestHistory: initialRequestHistory,
-}: Props) => {
+const SettingsPage = ({ initialUser }: Props) => {
   const [user, setUser] = useState<IUserClient>(initialUser);
-  const [isFormVisible, setIsFormVisible] = useState(false);
   const [saving, setSaving] = useState(false);
   const [payoutLoading, setPayoutLoading] = useState(false);
-  const [existingRequest, setExistingRequest] = useState(
-    initialExistingRequest,
-  );
-  const [requestHistory, setRequestHistory] = useState(initialRequestHistory);
-
   const [showPayoutDialog, setShowPayoutDialog] = useState(false);
 
   const [payoutForm, setPayoutForm] = useState({
