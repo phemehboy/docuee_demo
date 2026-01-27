@@ -7,7 +7,7 @@ import FAQItem from "./FAQItem";
 const FAQs = () => {
   const halfLength = Math.floor(faqs.length / 2);
   return (
-    <Section id="faqs" className="pt-20 w-full">
+    <Section id="faqs" className="pt-[5rem] w-full">
       <div className="lg:container relative z-2">
         <Heading className="w-full" title="Got Questions?, We’ve Got Answers" />
         <div className="flex flex-col md:flex-row">

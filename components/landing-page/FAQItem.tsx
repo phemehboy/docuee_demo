@@ -6,33 +6,36 @@ import React, { useState } from "react";
 const FAQItem = ({ item, index }: FaqProps) => {
   const [activeId, setActiveId] = useState<number | null>(null);
   const active = activeId === item.id;
-
   return (
     <div className="relative z-2 mb-10">
       <div
         className="group relative flex cursor-pointer items-center justify-between gap-10 px-7"
-        onClick={() => setActiveId(active ? null : item.id)}
+        onClick={() => {
+          setActiveId(activeId === item.id ? null : item.id);
+        }}
       >
         <div className="flex-1">
           <div className="small-compact mb-1.5 text-purple max-lg:hidden">
             {index < 10 ? "0" : ""}
             {index}
           </div>
-          <div className="text-[20px] font-medium leading-9 tracking-tight">
+          <div
+            className={clsx(
+              "text-[20px] font-medium leading-[36px] tracking-tight transition-colors duration-500 max-md:flex max-md:min-h-20 max-md:items-center",
+            )}
+          >
             {item.question}
           </div>
         </div>
-
         <div
           className={clsx(
-            "relative flex size-12 items-center justify-center rounded-full transition-all duration-300",
-            active && "rotate-45",
+            "faq-icon relative flex size-12 items-center justify-center rounded-full shadow- transition-all duration-500 group-hover:border-s4",
+            active && "before:bg-white after:rotate-0 after:bg-white",
           )}
         >
           <div className="bg-doc bg-cover size-11/12 rounded-full shadow-300" />
         </div>
       </div>
-
       {/* Answer */}
       <div
         className={clsx(
@@ -44,14 +47,13 @@ const FAQItem = ({ item, index }: FaqProps) => {
       >
         <div className="body-2 text-n-3">{item.answer}</div>
       </div>
-
       <div
         className={clsx(
-          "absolute -bottom-7 -top-7 left-0 right-0 -z-1 rounded-3xl bg-black-700 opacity-0 transition-opacity duration-300",
+          "bg-black-700 -bottom-7 -top-7 left-0 right-0 -z-1 rounded-3xl opacity-0 transition-opacity duration-500 absolute",
           active && "opacity-100",
         )}
       >
-        <div className="absolute inset-0.5 -z-1 rounded-3xl bg-black-100" />
+        <div className="bg-black-100 absolute inset-0.5 -z-1 rounded-3xl" />
         <div className="absolute left-8 top-0 h-0.5 w-40 bg-purple-600" />
       </div>
     </div>

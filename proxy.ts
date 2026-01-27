@@ -2,13 +2,9 @@
 import { clerkMiddleware } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
-// =======================================
-// MAIN MIDDLEWARE
-// =======================================
-
 const DEMO_USERNAME = "demo_student";
 
-const PUBLIC_PATHS = ["/sign-in", "/sign-up", "/forgot-password"];
+const PUBLIC_PATH_PREFIXES = ["/sign-in", "/sign-up", "/forgot-password"];
 
 export default clerkMiddleware(async (auth, request) => {
   const { userId, sessionClaims } = await auth();
@@ -20,21 +16,20 @@ export default clerkMiddleware(async (auth, request) => {
     request.nextUrl.pathname + request.nextUrl.search,
   );
 
-  // 🔒 Demo-only access, but skip for public paths like /sign-in
-  if (
-    !PUBLIC_PATHS.includes(pathname) &&
-    (!userId || sessionClaims?.username !== DEMO_USERNAME)
-  ) {
+  const isPublicPath = PUBLIC_PATH_PREFIXES.some((path) =>
+    pathname.startsWith(path),
+  );
+
+  // 🔒 Demo-only access (skip auth pages completely)
+  if (!isPublicPath && (!userId || sessionClaims?.username !== DEMO_USERNAME)) {
     return NextResponse.redirect(new URL("/sign-in", request.url));
   }
 
   // 🎯 Redirect /dashboard to user-specific dashboard
   if (pathname === "/dashboard" && userId) {
-    const redirectUrl = new URL(
-      `/user/${userId}/usertype/student/dashboard`,
-      request.url,
+    return NextResponse.redirect(
+      new URL(`/user/${userId}/usertype/student/dashboard`, request.url),
     );
-    return NextResponse.redirect(redirectUrl);
   }
 
   return response;
