@@ -11,10 +11,9 @@ interface Props {
   editor: Editor;
   onAction: (action: string) => void;
   stageKey: string;
-  isStudent: boolean;
 }
 
-export function AISelectionMenu({ editor, onAction, isStudent }: Props) {
+export function AISelectionMenu({ editor, onAction }: Props) {
   const [open, setOpen] = useState(false);
 
   if (!editor) return null;
