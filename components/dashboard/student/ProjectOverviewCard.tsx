@@ -91,8 +91,10 @@ export const ProjectOverviewCard = ({
       const email = user.email?.toLowerCase() || "";
       const conv = conversations?.find(
         (c) =>
-          (c.from === user._id && c.to === student.userId._id.toString()) ||
-          (c.to === user._id && c.from === student.userId._id.toString()),
+          (c.from === user._id.toString() &&
+            c.to === student.userId._id.toString()) ||
+          (c.to === user._id.toString() &&
+            c.from === student.userId._id.toString()),
       );
       const lastMessage = conv?.lastMessage?.toLowerCase() || "";
       return (
@@ -194,7 +196,7 @@ export const ProjectOverviewCard = ({
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 mt-4">
             {filteredChatUsers.length > 0 ? (
               filteredChatUsers.map((user) => {
-                const conv = getConversation(user._id);
+                const conv = getConversation(user._id.toString());
                 const unreadCount =
                   conv && conv.to === student.userId._id.toString()
                     ? conv.unreadCount
@@ -202,7 +204,7 @@ export const ProjectOverviewCard = ({
 
                 return (
                   <motion.div
-                    key={user._id}
+                    key={user._id.toString()}
                     whileHover={{ scale: 1.02 }}
                     className="relative cursor-pointer"
                     onClick={() => openChat(user)}
@@ -247,7 +249,7 @@ export const ProjectOverviewCard = ({
                             <div className="flex items-center gap-1 min-w-0">
                               {conv &&
                                 conv.from === student.userId._id.toString() && (
-                                  <div className="flex-shrink-0">
+                                  <div className="shrink-0">
                                     <MessageStatusIcon
                                       status={conv.lastStatus}
                                     />
@@ -285,7 +287,7 @@ export const ProjectOverviewCard = ({
               userName={`${selectedUser.firstName} ${selectedUser.lastName}`}
               userPicture={selectedUser.picture}
               senderId={student.userId._id.toString()}
-              recipientId={selectedUser._id}
+              recipientId={selectedUser._id.toString()}
               userType="student"
               recipientUserType={selectedUser.userType}
               page="projects"

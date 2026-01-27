@@ -97,7 +97,7 @@ export default function DashboardLayout({
             usertype={mongoUser.userType}
             sidebarOpen={sidebarOpen}
             setSidebarOpen={setSidebarOpen}
-            userId={mongoUser._id}
+            userId={mongoUser._id.toString()}
             firstName={mongoUser.firstName}
             lastName={mongoUser.lastName}
             className="sticky top-15 h-[calc(100dvh-60px)] shrink-0"

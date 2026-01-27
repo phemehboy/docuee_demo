@@ -1,7 +1,6 @@
 // components/dashboard/SessionInfoCard.tsx
 "use client";
 import { Card } from "@/components/ui/card";
-import { ISemester } from "@/lib/database/models/semester.model";
 
 export default function SessionInfoCard({
   session,

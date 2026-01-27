@@ -47,7 +47,7 @@ const ProjectDashboard = ({
         ["pending", "rejected"].includes(project.overallStatus)
       ) {
         const updateResponse = await updateProjectOverallStatus(
-          student._id as string,
+          student._id.toString(),
           "approved",
         );
         if (updateResponse?.status === "success") {
@@ -60,7 +60,7 @@ const ProjectDashboard = ({
         project.overallStatus !== "rejected"
       ) {
         const updateResponse = await updateProjectOverallStatus(
-          student._id as string,
+          student._id.toString(),
           "rejected",
         );
         if (updateResponse?.status === "success") {
@@ -73,7 +73,7 @@ const ProjectDashboard = ({
         project.overallStatus !== "pending"
       ) {
         const updateResponse = await updateProjectOverallStatus(
-          student._id as string,
+          student._id.toString(),
           "pending",
         );
         if (updateResponse?.status === "success") {
@@ -205,7 +205,7 @@ const ProjectDashboard = ({
                     }
                     isFreeUserWithoutCredits={isFreeUserWithoutCredits}
                     userCredit={studentUser?.creditBalance || 0}
-                    initialUserId={studentUser?._id || ""}
+                    initialUserId={studentUser?._id.toString() || ""}
                   />
                 )}
               </div>
