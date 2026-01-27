@@ -1,9 +1,9 @@
-# Docuee — Education Infrastructure for Project Writing & Academic Workflows (Demo)
-
 ![Node.js](https://img.shields.io/badge/node.js-18.17.1-green)
 ![Next.js](https://img.shields.io/badge/Next.js-14.1.1-blue)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Demo](https://img.shields.io/badge/Live-Demo-blue)](https://docuee.com)
+
+# Docuee — Education Infrastructure for Project Writing & Academic Workflows (Demo)
 
 Docuee is an education SaaS platform designed to modernize how students plan, write, review, and present academic projects — while giving institutions structure, visibility, and control over academic workflows.
 
@@ -57,7 +57,7 @@ The demo highlights the **core student project experience**:
 - 🧠 Guided idea development and argument flow (**AI is simulated in the demo**)
 - 📊 Project presentation (demo slide flow)
 - 🤝 Real-time collaboration (limited demo scope)
-- 🔁 Clear project lifecycle: draft → review → completion
+- 🔁 Clear project lifecycle: draft → review → completion (**Review not included as you cannot see the supervisor side**)
 
 ---
 
@@ -106,7 +106,7 @@ Docuee is built with a **modular, scalable architecture**:
 
 To protect intellectual property and ensure safety, the demo has the following limitations:
 
-- ❌ No AI model calls
+- ❌ No real AI model calls (AI behavior is simulated)
 - ❌ No billing, payments, or subscriptions
 - ❌ No real institution, supervisor, or admin workflows
 - ❌ No exam, quiz, grading, or result systems
@@ -158,8 +158,4 @@ git clone https://github.com/YourUsername/docuee-demo.git
 cd docuee-demo
 npm install
 npm run dev
-
-📄 License
-
-This demo is released under the MIT License.
 ```

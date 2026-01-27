@@ -42,6 +42,11 @@ import { Loader } from "@/components/ui/Loader";
 import { Table } from "@tiptap/extension-table";
 import { TextStyle } from "@tiptap/extension-text-style";
 import clsx from "clsx";
+import { useEditorAIActions } from "@/lib/extensions/useEditorAIActions";
+import { LiveblocksEditorGate } from "@/components/editor/LiveblocksEditorGate";
+import { AISelectionMenu } from "@/components/AIAssisted/AISelectionMenu";
+import { CustomParagraph } from "@/lib/extensions/CustomParagraph";
+import { AIContentMark } from "@/lib/extensions/AIContentMark";
 
 function debounce(fn: (...args: any[]) => void, delay = 1000) {
   let timer: NodeJS.Timeout;
@@ -65,6 +70,7 @@ const Editor = ({
   projectId,
   currentStage,
   setCurrentStage,
+  stageKey,
 }: EditorProps) => {
   const autosaveRef = useRef<(html: string) => void>(() => {});
   const lastHTMLRef = useRef<string>("");
@@ -142,7 +148,11 @@ const Editor = ({
     extensions: [
       liveblocks,
       // StarterKit.configure({ history: false }),
-      StarterKit,
+      StarterKit.configure({
+        paragraph: false, // ⬅️ disable default
+      }),
+      CustomParagraph,
+      AIContentMark,
       FontSizeExtension,
       LineHeightExtension,
       TextAlign.configure({ types: ["heading", "paragraph"] }),
@@ -190,6 +200,8 @@ const Editor = ({
       autosaveRef.current(html);
     },
   });
+
+  const { runAI } = useEditorAIActions(project, stageKey, undefined);
 
   const handleStageChange = async (newStage: {
     key: string;
@@ -345,9 +357,18 @@ const Editor = ({
             })}
           </div>
           <div className="w-full max-w-[90vw] sm:max-w-204 mx-auto relative">
-            <div className="editor-print-wrapper">
-              <EditorContent editor={editor} />
-            </div>
+            <LiveblocksEditorGate>
+              <div className="editor-print-wrapper">
+                <EditorContent editor={editor} />
+                {editor && (
+                  <AISelectionMenu
+                    editor={editor}
+                    onAction={runAI}
+                    stageKey={stageKey}
+                  />
+                )}
+              </div>
+            </LiveblocksEditorGate>
           </div>
 
           <div className="w-full flex gap-2 items-center print:hidden overflow-x-auto whitespace-nowrap p-2">

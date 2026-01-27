@@ -21,8 +21,10 @@ export default clerkMiddleware(async (auth, request) => {
   );
 
   // 🔒 Demo-only access (skip auth pages completely)
-  if (!isPublicPath && (!userId || sessionClaims?.username !== DEMO_USERNAME)) {
-    return NextResponse.redirect(new URL("/sign-in", request.url));
+  if (!isPublicPath && userId && sessionClaims?.username !== DEMO_USERNAME) {
+    return NextResponse.redirect(
+      new URL("/sign-in?demo_only=true", request.url),
+    );
   }
 
   // 🎯 Redirect /dashboard to user-specific dashboard

@@ -166,6 +166,25 @@
   background: #2563eb; /* lighter blue on hover or active */
 }
 
+/* =========================
+   Base AI-assisted highlight
+   ========================= */
+[data-ai-assisted="true"] {
+  background-color: rgba(255, 235, 59, 0.18); /* soft yellow */
+  border-left: 3px solid rgba(255, 193, 7, 0.7);
+  padding-left: 6px;
+  margin-left: -6px;
+  border-radius: 2px;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+/* Optional hover clarity */
+[data-ai-assisted="true"]:hover {
+  background-color: rgba(255, 235, 59, 0.28);
+}
+
 .tiptap p.is-editor-empty:first-child::before {
   color: #adb5bd;
   content: attr(data-placeholder);

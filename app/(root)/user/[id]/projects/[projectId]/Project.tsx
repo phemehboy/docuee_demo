@@ -24,6 +24,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useFinalStageRedirect } from "@/components/hooks/useFinalStageRedirect";
+import { AIResultPanel } from "@/components/AIAssisted/AIResultPanel";
 
 interface ProjectProps {
   projectId: string;
@@ -200,6 +201,7 @@ export const Project = ({ projectId, id }: ProjectProps) => {
             setCurrentStage={setCurrentStage}
             stageKey={currentStage.key}
           />
+          <AIResultPanel />
         </div>
       </div>
 
@@ -220,7 +222,9 @@ export const Project = ({ projectId, id }: ProjectProps) => {
               <div className="text-sm text-muted-foreground space-y-2 text-left">
                 <p>
                   <strong>⚠️ Demo Mode:</strong> This project is for
-                  demonstration purposes. No submissions or edits are possible.
+                  demonstration purposes. You can highlight text in the editor
+                  and use the AI tools, but any suggestions are
+                  <strong>mocked content</strong> for demonstration only.
                 </p>
                 <p>Stages for this {project.projectType}:</p>
                 <ul className="list-disc list-inside">
@@ -229,8 +233,8 @@ export const Project = ({ projectId, id }: ProjectProps) => {
                   ))}
                 </ul>
                 <p>
-                  You can navigate between stages to see how the editor and
-                  workflow look, but all are simulation.
+                  Feel free to explore and see how the AI suggestions would
+                  appear, but no real edits or submissions will be saved.
                 </p>
               </div>
             </DialogDescription>
